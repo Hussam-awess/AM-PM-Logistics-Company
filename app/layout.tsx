@@ -35,19 +35,25 @@ export const metadata: Metadata = {
       { url: "/placeholder-logo.png", sizes: "180x180", type: "image/png" },
     ],
   },
+  verification: {
+    google: "google47be27e3b83b2b72.html"
+  }
 }
+
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="google47be27e3b83b2b72.html" />
+      </head>
       <body className={`${inter.className} ${poppins.className}`}>
-  {children}
-</body>
+        {children}
+      </body>
       <Analytics />
     </html>
   )
 }
+
