@@ -58,7 +58,8 @@ export default function RequestPage() {
 
   const COMPANY_WHATSAPP = "255788086288" 
 
-const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
+
   e.preventDefault()
   setIsSubmitting(true)
   setError(null)
@@ -85,6 +86,21 @@ const handleSubmit = (e: React.FormEvent) => {
     )}`
 
     window.open(whatsappURL, "_blank")
+    await fetch("/api/send-email", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    to: "Pubg4k12@gmail.com",
+    subject: "🚚 New Transport Request",
+    html: `
+      <h3>New Job Request</h3>
+      <p><b>Name:</b> ${formData.requesterName}</p>
+      <p><b>Phone:</b> ${formData.requesterPhone}</p>
+      <p><b>Pickup:</b> ${formData.pickupLocation}</p>
+      <p><b>Delivery:</b> ${formData.deliveryLocation}</p>
+    `,
+  }),
+})
     setIsSuccess(true) // show success message immediately
   } catch (err) {
     setError("Failed to open WhatsApp. Please try again.")
