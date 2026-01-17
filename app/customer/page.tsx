@@ -48,21 +48,6 @@ export default async function CustomerDashboard() {
             <div className="text-2xl font-bold text-slate-900">{requests?.length || 0}</div>
           </CardContent>
         </Card>
-*/
-
-// Customer portal is temporarily disabled
-// Uncomment the code above to enable the customer dashboard
-export default function CustomerPortalDisabled() {
-  return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-2">Customer Portal</h1>
-        <p className="text-slate-600">The customer portal is currently being updated.</p>
-        <p className="text-sm text-slate-500 mt-2">Please check back soon or contact support.</p>
-      </div>
-    </div>
-  )
-}
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -146,3 +131,17 @@ export default function CustomerPortalDisabled() {
   )
 }
 */
+
+// Customer portal is temporarily disabled
+// Uncomment the code above to enable the customer dashboard
+export default function CustomerPortalDisabled() {
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-2">Customer Portal</h1>
+        <p className="text-slate-600">The customer portal is currently being updated.</p>
+        <p className="text-sm text-slate-500 mt-2">Please check back soon or contact support.</p>
+      </div>
+    </div>
+  )
+}
