@@ -23,22 +23,15 @@ export default function LoginPage() {
     setIsLoading(true)
     setError(null)
 
-    console.log("[v0] Login attempt started for email:", email)
-
     try {
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      console.log("[v0] Sign in response:", { signInData, signInError })
-
       if (signInError) {
-        console.log("[v0] Sign in error:", signInError)
         throw signInError
       }
-
-      console.log("[v0] User signed in successfully:", signInData.user.id)
 
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
@@ -46,36 +39,26 @@ export default function LoginPage() {
         .eq("id", signInData.user.id)
         .maybeSingle()
 
-      console.log("[v0] Profile query response:", { profile, profileError })
-
       if (profileError) {
-        console.log("[v0] Profile error:", profileError)
         throw profileError
       }
 
       if (!profile) {
-        console.log("[v0] No profile found, redirecting to home page")
         router.push("/")
         router.refresh()
         return
       }
 
-      console.log("[v0] Profile found:", profile)
-
       if (profile.is_admin) {
-        console.log("[v0] Redirecting to admin dashboard")
         router.push("/admin")
       } else if (profile.is_management) {
-        console.log("[v0] Redirecting to management dashboard")
         router.push("/management")
       } else {
-        console.log("[v0] Redirecting to home page")
         router.push("/")
       }
 
       router.refresh()
     } catch (error: unknown) {
-      console.log("[v0] Login error caught:", error)
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
       setIsLoading(false)

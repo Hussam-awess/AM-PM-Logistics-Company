@@ -89,8 +89,7 @@ export default function AboutPage() {
             </p>
           </div>
         </section>
-{/* del middleware.ts
-npm run dev */}
+
         {/* Mission, Vision, Values */}
         <section className="py-16 md:py-20">
           <div className="container mx-auto px-4">

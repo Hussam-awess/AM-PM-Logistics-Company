@@ -4,11 +4,45 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+import { Suspense, useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { useToast } from "@/hooks/use-toast"
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
+  const [isLoading, setIsLoading] = useState(false)
+  const [countdown, setCountdown] = useState(0)
+  const { toast } = useToast()
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [countdown])
+
+  const handleResendEmail = async () => {
+    if (!email) return
+    
+    setIsLoading(true)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.resendIdentityConfirmationEmail(email)
+      
+      if (error) {
+        toast({ title: "Unable to resend", description: error.message })
+      } else {
+        setCountdown(30)
+        toast({ title: "Confirmation email sent", description: "Check your email for the verification link." })
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err)
+      toast({ title: "Error", description: message })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10 bg-gradient-to-br from-slate-50 to-slate-100">
@@ -42,6 +76,28 @@ function VerifyEmailContent() {
                 <Button asChild variant="outline" className="w-full bg-transparent">
                   <Link href="/auth/sign-up">Create Different Account</Link>
                 </Button>
+              </div>
+
+              <div className="space-y-3 pt-2 border-t">
+                <p className="text-xs text-slate-600 text-center">
+                  Didn't receive the email?
+                </p>
+                {countdown > 0 ? (
+                  <p className="text-xs text-slate-500 text-center">
+                    You can resend in <strong>{countdown} seconds</strong>
+                  </p>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleResendEmail}
+                    disabled={isLoading || !email}
+                    className="w-full"
+                  >
+                    {isLoading ? "Sending..." : "Resend confirmation link"}
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

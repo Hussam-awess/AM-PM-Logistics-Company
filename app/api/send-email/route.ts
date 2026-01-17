@@ -9,12 +9,12 @@ export async function POST(req: Request) {
     secure: false,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      pass: process.env.SMTP_PASSWORD,
     },
   })
 
   await transporter.sendMail({
-    from: `"AM-PM Company Ltd" <${process.env.SMTP_FROM}>`,
+    from: `"AM-PM Company Ltd" <${process.env.SMTP_FROM_EMAIL}>`,
     to,
     subject,
     html,

@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const supabaseAdmin = createAdminClient()
 
   const { data, error } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-    redirectTo: "https://ampmcompany-84kzbwoc5-pubg4k12-1267s-projects.vercel.app/reset-password"
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/reset-password`
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })

@@ -98,7 +98,7 @@ ${formData.specialRequirements ? `Notes: ${formData.specialRequirements}` : ""}
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    to: "Pubg4k12@gmail.com",
+    to: formData.requesterEmail,
     subject: `🚚 New ${isQuoteRequest ? "Quote" : "Transport"} Request`,
     html: `
       <h3>${isQuoteRequest ? "Price Quotation Request" : "Transport Job Request"}</h3>
