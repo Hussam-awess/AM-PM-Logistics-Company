@@ -10,12 +10,15 @@ export async function POST(request: Request) {
       requester_email,
       requester_phone,
       company_name,
+      container_number,
       cargo_type,
       cargo_weight_tons,
       pickup_location,
       delivery_location,
       preferred_date,
       special_requirements,
+      request_type,
+      status,
     } = body
 
     // Validate required fields
@@ -41,13 +44,15 @@ export async function POST(request: Request) {
         requester_email,
         requester_phone,
         company_name,
+        container_number,
         cargo_type,
         cargo_weight_tons: Number.parseFloat(cargo_weight_tons),
         pickup_location,
         delivery_location,
         preferred_date,
         special_requirements,
-        status: "pending",
+        request_type: request_type || "price_quote",
+        status: status || "pending",
       })
       .select()
       .single()

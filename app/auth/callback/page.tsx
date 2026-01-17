@@ -29,7 +29,7 @@ export default function AuthCallbackPage() {
         } else if (profile?.is_management) {
           router.push("/management")
         } else {
-          router.push("/customer")
+          router.push("/")
         }
       } else {
         router.push("/auth/login")

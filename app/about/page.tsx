@@ -53,6 +53,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold mb-12 text-center">Our Operations</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-200">
+                {/* <div className="C:\Users\HP\Desktop\logistics-website-build\public\pic 4.JPG"></div> */}
                 <Image
                   src="/modern-logistics-trucks-on-african-highway.jpg"
                   alt="AM-PM Company fleet of trucks"
@@ -75,6 +76,12 @@ export default function AboutPage() {
                   fill
                   className="object-cover"
                 />
+              {/* <Image
+                  src="C:\Users\HP\Desktop\logistics-website-build\public\pic 4.JPG"
+                  alt="Company team coordinating logistics"
+                  fill
+                  className="object-cover"
+                />   */}
               </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-6">
@@ -82,8 +89,8 @@ export default function AboutPage() {
             </p>
           </div>
         </section>
-del middleware.ts
-npm run dev
+{/* del middleware.ts
+npm run dev */}
         {/* Mission, Vision, Values */}
         <section className="py-16 md:py-20">
           <div className="container mx-auto px-4">

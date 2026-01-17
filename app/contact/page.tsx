@@ -37,8 +37,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Phone</h3>
-                      <p className="text-muted-foreground">+255 XXX XXX XXX</p>
-                      <p className="text-muted-foreground">+243 XXX XXX XXX (Congo)</p>
+                      <p className="text-muted-foreground">+255 788 086 288</p>
+                      <p className="text-muted-foreground">+243 782 177 000 (Congo)</p>
                     </div>
                   </div>
 
@@ -125,14 +125,14 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:+255XXXXXXXXX"
+                href="tel:+255 788 086 288"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors"
               >
                 <Phone className="h-5 w-5" />
                 Call Now
               </a>
               <a
-                href="mailto:info@ampm.co.tz"
+                href="mailto:arifabdulrahman@gmail.com"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-input bg-background rounded-md font-medium hover:bg-accent transition-colors"
               >
                 <Mail className="h-5 w-5" />

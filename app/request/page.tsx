@@ -36,6 +36,7 @@ export default function RequestPage() {
     deliveryLocation: "",
     preferredDate: "",
     specialRequirements: "",
+    requestType: "price_quote",
   })
 
   useEffect(() => {
@@ -65,23 +66,30 @@ const handleSubmit = async (e: React.FormEvent) => {
   setError(null)
 
   try {
-    const message = `
-🚚 *New Logistics Job Request*
+    // Determine status and message based on request type
+    const isQuoteRequest = formData.requestType === "price_quote"
+    const requestStatus = isQuoteRequest ? "quote_requested" : "pending"
+    
+    const messageHeader = isQuoteRequest 
+      ? "PRICE QUOTATION REQUEST\n(This is not a confirmed job)"
+      : "TRANSPORT JOB REQUEST\n(Confirmed booking)"
 
-👤 *Name:* ${formData.requesterName}
-📧 *Email:* ${formData.requesterEmail}
-📞 *Phone:* ${formData.requesterPhone}
-🏢 *Company:* ${formData.companyName || "N/A"}
-📦 *Container #:* ${formData.containerNumber || "N/A"}
-📦 *Cargo Type:* ${formData.cargoType}
-⚖️ *Weight (tons):* ${formData.cargoWeight}
-📍 *Pickup:* ${formData.pickupLocation}
-📍 *Delivery:* ${formData.deliveryLocation}
-📅 *Preferred Date:* ${formData.preferredDate || "N/A"}
-📝 *Notes:* ${formData.specialRequirements || "N/A"}
+    const message = `
+${messageHeader}
+
+Name: ${formData.requesterName}
+Phone: ${formData.requesterPhone}
+Pickup: ${formData.pickupLocation}
+Delivery: ${formData.deliveryLocation}
+Container: ${formData.containerNumber || "N/A"}
+Cargo type: ${formData.cargoType}
+Weight: ${formData.cargoWeight} tons
+${formData.companyName ? `Company: ${formData.companyName}` : ""}
+${formData.preferredDate ? `Preferred Date: ${formData.preferredDate}` : ""}
+${formData.specialRequirements ? `Notes: ${formData.specialRequirements}` : ""}
     `
 
-    const whatsappURL = `https://wa.me/${255788086288}?text=${encodeURIComponent(
+    const whatsappURL = `https://wa.me/${COMPANY_WHATSAPP}?text=${encodeURIComponent(
       message
     )}`
 
@@ -91,19 +99,20 @@ const handleSubmit = async (e: React.FormEvent) => {
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     to: "Pubg4k12@gmail.com",
-    subject: "🚚 New Transport Request",
+    subject: `🚚 New ${isQuoteRequest ? "Quote" : "Transport"} Request`,
     html: `
-      <h3>New Job Request</h3>
+      <h3>${isQuoteRequest ? "Price Quotation Request" : "Transport Job Request"}</h3>
       <p><b>Name:</b> ${formData.requesterName}</p>
       <p><b>Phone:</b> ${formData.requesterPhone}</p>
       <p><b>Pickup:</b> ${formData.pickupLocation}</p>
       <p><b>Delivery:</b> ${formData.deliveryLocation}</p>
+      <p><b>Type:</b> ${isQuoteRequest ? "Price Quote" : "Transport Job"}</p>
     `,
   }),
 })
     setIsSuccess(true) // show success message immediately
   } catch (err) {
-    setError("Failed to open WhatsApp. Please try again.")
+    setError("Failed to submit request. Please try again.")
   } finally {
     setIsSubmitting(false)
   }
@@ -168,6 +177,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   }
 
   if (isSuccess) {
+    const isQuoteRequest = formData.requestType === "price_quote"
+    
     return (
       <div className="flex min-h-screen flex-col">
         <PublicHeader />
@@ -184,13 +195,27 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <CardDescription className="text-base mt-2">Thank you for choosing AM-PM Company Ltd</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  We have received your transport request. Our team will review your requirements and contact you
-                  shortly with a detailed quote and timeline.
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  A confirmation email has been sent to <strong>{formData.requesterEmail}</strong>
-                </p>
+                {isQuoteRequest ? (
+                  <>
+                    <p className="text-muted-foreground leading-relaxed">
+                      We have received your price quotation request. Our team will review your cargo details and contact you
+                      shortly with a competitive quote for your shipment.
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Expected response time: <strong>24-48 hours</strong>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground leading-relaxed">
+                      We have received your transport request. Our team will review your requirements and contact you
+                      shortly with a detailed quote and timeline.
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      A confirmation email has been sent to <strong>{formData.requesterEmail}</strong>
+                    </p>
+                  </>
+                )}
                 <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
                   <Button onClick={() => setIsSuccess(false)} variant="outline">
                     Submit Another Request Via WhatsApp
@@ -281,12 +306,40 @@ const handleSubmit = async (e: React.FormEvent) => {
                         <Input
                           id="requesterPhone"
                           type="tel"
-                          placeholder="+255 XXX XXX XXX"
+                          placeholder="+255788 086 288"
                           required
                           value={formData.requesterPhone}
                           onChange={(e) => handleChange("requesterPhone", e.target.value)}
                         />
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Request Type */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Request Type</h3>
+                    <div className="space-y-2">
+                      <Label htmlFor="requestType">
+                        What would you like to do? <span className="text-destructive">*</span>
+                      </Label>
+                      <Select
+                        value={formData.requestType}
+                        onValueChange={(value) => handleChange("requestType", value)}
+                        required
+                      >
+                        <SelectTrigger id="requestType">
+                          <SelectValue placeholder="Select request type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="price_quote">Get a Price Quotation</SelectItem>
+                          <SelectItem value="request_transport">Book a Transport Job</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        {formData.requestType === "price_quote"
+                          ? "Request a price quote for your shipment (non-binding)"
+                          : "Book a confirmed transport job"}
+                      </p>
                     </div>
                   </div>
 
@@ -415,6 +468,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSubmitting}>
                       Cancel
                     </Button>
+                  </div>
+
+                  <div className="rounded-md bg-blue-50 border border-blue-200 p-4">
+                    <p className="text-sm text-blue-900">
+                      <strong>Important:</strong> Once you click the "Send via WhatsApp" button, your request will be submitted immediately. 
+                      Please verify that all the information is correct and relevant before submitting.
+                    </p>
                   </div>
                 </form>
               </CardContent>

@@ -63,11 +63,11 @@ export function PublicFooter() {
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4 text-primary" />
-                <span>+255 XXX XXX XXX</span>
+                <span>+255 788 086 288</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-primary" />
-                <span>info@ampm.co.tz</span>
+                <span>arifabdulrahman@gmail.com</span>
               </li>
             </ul>
           </div>

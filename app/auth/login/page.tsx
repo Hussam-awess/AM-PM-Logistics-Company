@@ -54,8 +54,8 @@ export default function LoginPage() {
       }
 
       if (!profile) {
-        console.log("[v0] No profile found, redirecting to customer dashboard")
-        router.push("/customer")
+        console.log("[v0] No profile found, redirecting to home page")
+        router.push("/")
         router.refresh()
         return
       }
@@ -69,8 +69,8 @@ export default function LoginPage() {
         console.log("[v0] Redirecting to management dashboard")
         router.push("/management")
       } else {
-        console.log("[v0] Redirecting to customer dashboard")
-        router.push("/customer")
+        console.log("[v0] Redirecting to home page")
+        router.push("/")
       }
 
       router.refresh()

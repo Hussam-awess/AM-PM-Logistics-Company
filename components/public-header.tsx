@@ -3,10 +3,23 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export function PublicHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      setIsLoggedIn(!!session)
+    }
+    checkAuth()
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -35,9 +48,24 @@ export function PublicHeader() {
           <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
             Contact
           </Link>
-          <Button asChild size="sm" className="ml-2">
-            <Link href="/auth/login">Login</Link>
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              size="sm"
+              className="ml-2"
+              onClick={async () => {
+                const supabase = createClient()
+                await supabase.auth.signOut()
+                setIsLoggedIn(false)
+                window.location.href = "/"
+              }}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button asChild size="sm" className="ml-2">
+              <Link href="/auth/login">Login</Link>
+            </Button>
+          )}
         </nav>
 
         <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -83,11 +111,26 @@ export function PublicHeader() {
             >
               Contact
             </Link>
-            <Button asChild className="mt-2">
-              <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                Login
-              </Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                className="mt-2"
+                onClick={async () => {
+                  const supabase = createClient()
+                  await supabase.auth.signOut()
+                  setIsLoggedIn(false)
+                  setMobileMenuOpen(false)
+                  window.location.href = "/"
+                }}
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button asChild className="mt-2">
+                <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                  Login
+                </Link>
+              </Button>
+            )}
           </nav>
         </div>
       )}
