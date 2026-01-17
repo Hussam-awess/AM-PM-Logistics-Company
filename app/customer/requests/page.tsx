@@ -103,3 +103,17 @@ export default async function CustomerRequestsPage() {
   )
 }
 */
+
+// Customer portal requests page is temporarily disabled
+// Uncomment the code above to enable the customer requests page
+export default function CustomerRequestsDisabled() {
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-2">Customer Requests</h1>
+        <p className="text-slate-600">The customer requests page is currently being updated.</p>
+        <p className="text-sm text-slate-500 mt-2">Please check back soon or contact support.</p>
+      </div>
+    </div>
+  )
+}
